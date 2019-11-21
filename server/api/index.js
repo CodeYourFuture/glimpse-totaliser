@@ -16,13 +16,13 @@ shopify.on('callLimits', limits => console.log(limits, 'test2'));
 router.post('/transaction', async (req, res) => {
 	const url = 'https://weglimpse.co/admin/api/2019-10/reports.json';
 	try {
-		//if (!res.headersSent) res.json({}, 0, 500);
-		const data = await axios.get(url);
+		const { data } = await axios.get(url);
+
 		if (data) {
 			res.sendStatus(200).json(data);
 		}
 	} catch (error) {
-       console.log(error);
+		console.log(error);
 		res.sendStatus(500).json(error);
 	}
 });
