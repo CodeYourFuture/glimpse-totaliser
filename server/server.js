@@ -9,3 +9,7 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 app.get('/express_backend', (req, res) => {
   res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
 });
+
+app.listen(process.env.PORT || 4000, function() {
+    console.log("Server is listening on port 4000. Ready to accept requests!");
+  });
