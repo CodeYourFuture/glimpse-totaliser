@@ -14,6 +14,7 @@ const shopify = new Shopify({
 shopify.on('callLimits', limits => console.log(limits, 'test2'));
 
 router.post('/transaction', async (req, res) => {
+	console.log(req.body);
 	const url = 'https://weglimpse.co/admin/api/2019-10/reports.json';
 	try {
 		const { data } = await axios.get(url);
