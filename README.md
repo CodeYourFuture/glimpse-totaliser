@@ -16,8 +16,8 @@ then run client side with `npm start`
 
 ### How to create .env file
 
--   In the main directory add new file .env
--   Add variables:
-    -   SHOP_NAME = value
-    -   API_KEY= value
-    -   PASSWORD= value
+- In the main directory add new file .env
+- Add variables:
+  - SHOPIFY_SHOP_NAME = value
+  - SHOPIFY_API_KEY= value
+  - SHOPIFY_PASSWORD= value
