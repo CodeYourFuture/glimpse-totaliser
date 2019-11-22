@@ -2,7 +2,7 @@ const Shopify = require("shopify-api-node");
 const express = require("express");
 const axios = require("axios");
 
-const { SHOP_NAME, API_KEY, PASSWORD } = process.env;
+const { SHOPIFY_SHOP_NAME, SHOPIFY_API_KEY, SHOPIFY_PASSWORD } = process.env;
 const router = express.Router();
 
 const shopify = new Shopify({
