@@ -1,5 +1,6 @@
 const Shopify = require('shopify-api-node');
-
+const express = require('express');
+const router = express.Router();
 const { SHOPIFY_SHOP_NAME, SHOPIFY_API_KEY, SHOPIFY_PASSWORD } = process.env;
 
 const shopify = new Shopify({
@@ -8,19 +9,24 @@ const shopify = new Shopify({
 	password: SHOPIFY_PASSWORD,
 });
 
-const create = param => {
-	shopify.order
-		.create(param)
-		.then(data => console.log(data))
-		.catch(err => console.error(err));
-};
-
 shopify.order
 	.list({ financial_status: 'paid' })
 	.then(orders => {
 		const totalPrice = orders.reduce((acc, value, index) => {
 			return acc + Number(value.total_price);
 		}, 0);
-		create({ totalPrice });
+		console.log(totalPrice);
 	})
 	.catch(err => console.error(err));
+
+router.post('/transaction', async (req, res) => {
+	console.log(req.body);
+	try {
+		res.sendStatus(200);
+	} catch (error) {
+		console.log(error);
+		res.sendStatus(500);
+	}
+});
+
+module.exports = router;
