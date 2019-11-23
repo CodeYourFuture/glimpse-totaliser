@@ -11,8 +11,9 @@ const shopify = new Shopify({
 
 const callShopify = () => {
 	const currentDate = new Date(); // Return orders only form current day
+	const getHours = currentDate.getHours();
 	return shopify.order
-		.list({ financial_status: 'paid', created_at_min: currentDate })
+		.list({ financial_status: 'paid', created_at_max: getHours })
 		.then(orders => {
 			const totalPrice = orders.reduce((acc, value, index) => {
 				return acc + Number(value.total_price);
