@@ -9,24 +9,27 @@ const shopify = new Shopify({
 	password: SHOPIFY_PASSWORD,
 });
 
-shopify.order
-	.list({ financial_status: 'paid' })
-	.then(orders => {
-		const totalPrice = orders.reduce((acc, value, index) => {
-			return acc + Number(value.total_price);
-		}, 0);
-		console.log(totalPrice);
-	})
-	.catch(err => console.error(err));
+const callShopify = () => {
+	const currentDate = new Date(); // Return orders only form current day
+	shopify.order
+		.list({ financial_status: 'paid', created_at_min: currentDate })
+		.then(orders => {
+			const totalPrice = orders.reduce((acc, value, index) => {
+				return acc + Number(value.total_price);
+			}, 0);
+			console.log(totalPrice);
+		})
+		.catch(err => console.error(err));
+};
+
+const timer = 30000;
+
+setInterval(callShopify, timer);
 
 router.post('/transaction', async (req, res) => {
-	console.log(req.body);
-	try {
-		res.sendStatus(200);
-	} catch (error) {
-		console.log(error);
-		res.sendStatus(500);
-	}
+	console.log(req.body.totalPrice);
+
+	res.sendStatus(200);
 });
 
 module.exports = router;
