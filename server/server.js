@@ -28,7 +28,7 @@ app.get('/healthcheck', (req, res) => {
  * In production, the static build is served from here
  */
 //
-if (process.env.NODE_ENV !== 'development') {
+if (process.env.NODE_ENV === 'production') {
 	app.use('/', express.static(path.resolve(__dirname, '../client/build')));
 	app.get('*', (req, res) => {
 		res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));

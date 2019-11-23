@@ -1,31 +1,34 @@
-const Shopify = require("shopify-api-node");
-const express = require("express");
-const axios = require("axios");
-
-const { SHOPIFY_SHOP_NAME, SHOPIFY_API_KEY, SHOPIFY_PASSWORD } = process.env;
+const Shopify = require('shopify-api-node');
+const express = require('express');
 const router = express.Router();
+const { SHOPIFY_SHOP_NAME, SHOPIFY_API_KEY, SHOPIFY_PASSWORD } = process.env;
 
 const shopify = new Shopify({
-  shopName: SHOPIFY_SHOP_NAME,
-  apiKey: SHOPIFY_API_KEY,
-  password: SHOPIFY_PASSWORD
+	shopName: SHOPIFY_SHOP_NAME,
+	apiKey: SHOPIFY_API_KEY,
+	password: SHOPIFY_PASSWORD,
 });
 
-shopify.on("callLimits", limits => console.log(limits, "test2"));
+const callShopify = () => {
+	const currentDate = new Date(); // Return orders only form current day
+	return shopify.order
+		.list({ financial_status: 'paid', created_at_min: currentDate })
+		.then(orders => {
+			const totalPrice = orders.reduce((acc, value, index) => {
+				return acc + Number(value.total_price);
+			}, 0);
+			return {
+				totalPrice,
+			};
+		})
+		.catch(err => console.error(err));
+};
 
-router.post("/transaction", async (req, res) => {
-  console.log(req.body);
-  const url = "https://weglimpse.co/admin/api/2019-10/reports.json";
-  try {
-    const { data } = await axios.get(url);
-
-    if (data) {
-      res.sendStatus(200).json(data);
-    }
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500).json(error);
-  }
+router.post('/transaction', (req, res) => {
+	callShopify().then(data => {
+		console.log(data.totalPrice);
+	});
+	res.sendStatus(200);
 });
 
 module.exports = router;
