@@ -10,6 +10,7 @@ const path = require('path');
 app.use(bodyParser.json());
 app.use(cors());
 
+app.use('/api', api);
 const port = process.env.PORT || 5000;
 
 // create a GET route

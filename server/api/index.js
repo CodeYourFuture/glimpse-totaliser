@@ -11,24 +11,23 @@ const shopify = new Shopify({
 
 const callShopify = () => {
 	const currentDate = new Date(); // Return orders only form current day
-	shopify.order
+	return shopify.order
 		.list({ financial_status: 'paid', created_at_min: currentDate })
 		.then(orders => {
 			const totalPrice = orders.reduce((acc, value, index) => {
 				return acc + Number(value.total_price);
 			}, 0);
-			console.log(totalPrice);
+			return {
+				totalPrice,
+			};
 		})
 		.catch(err => console.error(err));
 };
 
-const timer = 30000;
-
-setInterval(callShopify, timer);
-
-router.post('/transaction', async (req, res) => {
-	console.log(req.body.totalPrice);
-
+router.post('/transaction', (req, res) => {
+	callShopify().then(data => {
+		console.log(data.totalPrice);
+	});
 	res.sendStatus(200);
 });
 
