@@ -2,30 +2,46 @@ const Shopify = require("shopify-api-node");
 const express = require("express");
 const axios = require("axios");
 
+
 const { SHOPIFY_SHOP_NAME, SHOPIFY_API_KEY, SHOPIFY_PASSWORD } = process.env;
 const router = express.Router();
 
 const shopify = new Shopify({
-  shopName: SHOPIFY_SHOP_NAME,
-  apiKey: SHOPIFY_API_KEY,
-  password: SHOPIFY_PASSWORD
+	shopName: SHOPIFY_SHOP_NAME,
+	apiKey: SHOPIFY_API_KEY,
+	password: SHOPIFY_PASSWORD,
 });
 
-shopify.on("callLimits", limits => console.log(limits, "test2"));
+// const create = param => {
+// 	shopify.order
+// 		.create(param)
+// 		.then(data => console.log(data))
+// 		.catch(err => console.error(err));
+// };
 
-router.post("/transaction", async (req, res) => {
-  console.log(req.body);
-  const url = "https://weglimpse.co/admin/api/2019-10/reports.json";
+const data = shopify.order
+	.list({ financial_status: 'paid' })
+	.then(orders => {
+		const totalPrice = orders.reduce((acc, value, index) => {
+			return acc + Number(value.total_price);
+		}, 0);
+		return totalPrice;
+	})
+	.catch(err => console.error(err));
+
+router.get("/transaction", async (req, res) => {
   try {
-    const { data } = await axios.get(url);
-
-    if (data) {
-      res.sendStatus(200).json(data);
-    }
+	  data.then(totalPrice => {
+		res.status(200).json({ success: true, totalPrice });
+	  })
   } catch (error) {
     console.log(error);
-    res.sendStatus(500).json(error);
+    res.status(500).json({ success: false, error });
   }
 });
 
-module.exports = router;
+
+
+
+module.exports = {router, data} 
+
