@@ -20,7 +20,8 @@ app.get('/express_backend', (req, res) => {
 
 
 app.get('/healthcheck', (req, res) => { 
-	res.sendStatus(200) });
+	res.sendStatus(200) 
+});
 
 /**
  * In development environemnt, we use the create-react-app dev server.
