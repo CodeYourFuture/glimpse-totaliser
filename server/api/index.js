@@ -10,9 +10,11 @@ const shopify = new Shopify({
 });
 
 const callShopify = () => {
-	const currentDate = new Date(); // Return orders only form current day
+	const currentDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()); // Return orders only form current day
+
+	console.log('Time', currentDate);
 	return shopify.order
-		.list({ financial_status: 'paid', updated_at_max: currentDate })
+		.list({ financial_status: 'paid', created_at_min: currentDate })
 		.then(orders => {
 			const totalPrice = orders.reduce((acc, value, index) => {
 				return acc + Number(value.total_price);
