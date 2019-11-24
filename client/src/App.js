@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import "./App.css";
 import socketIOClient from "socket.io-client";
+import Totaliser from "./Totaliser";
 
 const socket = socketIOClient("/");
 
@@ -8,26 +8,19 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-    response: ""
+      total: null
     };
   }
 
   componentDidMount() {
-    socket.on("Total", data => {
-      console.log("received data from server", data);
-      this.setState({ response: data});
+    socket.on("Total", total => {
+      this.setState({ total });
     });
   }
 
   render() {
-    const { response } = this.state;
-    return (
-      <div style={{ textAlign: "center" }}>
-      {response
-          ? <p> Total: {response} </p>
-          : <p>Loading...</p>}
-    </div>
-    );
+    const { total } = this.state;
+    return <Totaliser total={total} />;
   }
 }
 

@@ -1,0 +1,85 @@
+import React from "react";
+import styled from "styled-components";
+import logo from "./assets/logo.svg";
+import semi from "./assets/semi.svg";
+import snake from "./assets/snake.svg";
+import spiral from "./assets/spiral.svg";
+import star from "./assets/star.svg";
+import zag from "./assets/zag.svg";
+
+const Bg = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #44006e;
+`;
+
+const Total = styled.div`
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  margin-top: -2.5rem;
+  line-height: 5rem;
+  text-align: center;
+  font-size: 5rem;
+  font-family: "monospace";
+  color: white;
+`;
+
+const Logo = styled.img.attrs({ src: logo })`
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  margin-left: -2rem;
+  width: 4rem;
+`;
+
+const Semi = styled.img.attrs({ src: semi })`
+  position: absolute;
+  left: 5%;
+  bottom: 10%;
+  width: 7%;
+`;
+
+const Snake = styled.img.attrs({ src: snake })`
+  position: absolute;
+  left: 0;
+  top: 10%;
+  width: 14%;
+`;
+
+const Spiral = styled.img.attrs({ src: spiral })`
+  position: absolute;
+  right: 6%;
+  top: 34%;
+  width: 12%;
+`;
+
+const Star = styled.img.attrs({ src: star })`
+  position: absolute;
+  right: 36%;
+  top: 0;
+  width: 14%;
+`;
+
+const Zag = styled.img.attrs({ src: zag })`
+  position: absolute;
+  right: 18%;
+  bottom: 0;
+  width: 18%;
+`;
+
+const Totaliser = ({ total }) => (
+  <Bg>
+    {total && <Total>£{total.toFixed(2)}</Total>}
+    <Logo />
+    <Semi />
+    <Snake />
+    <Spiral />
+    <Star />
+    <Zag />
+  </Bg>
+);
+
+export default Totaliser;
