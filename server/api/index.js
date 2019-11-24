@@ -10,7 +10,11 @@ const shopify = new Shopify({
 });
 
 const callShopify = () => {
-	const currentDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()); // Return orders only form current day
+	const newDate = new Date();
+	const year = newDate.getFullYear();
+	const month = newDate.getMonth();
+	const day = newDate.getDate();
+	const currentDate = new Date(year, month, day).toISOString(); // Return orders only form current day
 
 	console.log('Time', currentDate);
 	return shopify.order
