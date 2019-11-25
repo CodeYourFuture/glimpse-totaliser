@@ -3,18 +3,18 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const api = require("./api");
-
-const app = express();
+const router = express.Router();
 const path = require("path");
+const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
+
+// app.use("/api", api);
 
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use("/api", api);
 const port = process.env.PORT || 5000;
-
 
 app.get("/express_backend", (req, res) => {
 	res.send({ express: "YOUR EXPRESS BACKEND IS CONNECTED TO REACT" });
@@ -24,14 +24,23 @@ app.get("/healthcheck", (req, res) => {
 	res.sendStatus(200) 
 });
 
+let customeSocket = null;
+
 io.on("connection", socket => {
+	customeSocket = socket
 	console.log("User connected");
-	setInterval(() => {
-		socket.emit("FromAPI", "50");
-	  }, 1000);
-	  socket.on("disconnect", () => {
+	socket.on("disconnect", () => {
 		console.log("User disconnected");
-	});
+	});	
+});
+
+app.post('/api/transaction', (req, res) => {
+	api.callShopify().then( data => {
+		setInterval(() => {
+			customeSocket.emit("Total", data.totalPrice );
+		  }, 1000);
+		res.sendStatus(200);
+	})
 });
 
 /**
@@ -48,3 +57,5 @@ if (process.env.NODE_ENV === "production") {
 
 // console.log that your server is up and running
 http.listen(port, () => console.log(`Listening on port ${port}`));
+
+// module.exports = app;
