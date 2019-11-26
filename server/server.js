@@ -24,25 +24,6 @@ app.get("/healthcheck", (req, res) => {
 	res.sendStatus(200) 
 });
 
-let customeSocket = null;
-
-io.on("connection", socket => {
-	customeSocket = socket
-	console.log("User connected");
-	socket.on("disconnect", () => {
-		console.log("User disconnected");
-	});	
-});
-
-app.post('/api/transaction', (req, res) => {
-	api.callShopify().then( data => {
-		setInterval(() => {
-			customeSocket.emit("Total", data.totalPrice );
-		  }, 1000);
-		res.sendStatus(200);
-	})
-});
-
 /**
  * In development environemnt, we use the create-react-app dev server.
  * In production, the static build is served from here
