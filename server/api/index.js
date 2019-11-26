@@ -1,11 +1,7 @@
 const Shopify = require('shopify-api-node');
 const express = require('express');
 const router = express.Router();
-
-const app = require("../server");
-const http = require("http").createServer(app);
-const io = require("socket.io")(http);
-
+const io = require("../server");
 
 const { SHOPIFY_SHOP_NAME, SHOPIFY_API_KEY, SHOPIFY_PASSWORD } = process.env;
 
@@ -37,18 +33,18 @@ const callShopify = () => {
 	.catch(err => console.error(err));
 };
 
-
 io.on("connection", socket => {
 	console.log("User connected");
 	socket.on("disconnect", () => {
 		console.log("User disconnected");
 	});	
 });
-router.post('/api/transaction', (req, res) => {
+
+router.post('/transaction', (req, res) => {
 	callShopify().then( data => {
-	 io.emit("Total", data.totalPrice );	})
+	 io.emit("Total", data.totalPrice );
+	res.sendStatus(200);
+	})
 });
-
-
 
 module.exports = router;

@@ -2,24 +2,24 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const api = require("./api");
-const router = express.Router();
 const path = require("path");
 const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 
-// app.use("/api", api);
+module.exports =  io;
+
+const api = require("./api");
 
 app.use(bodyParser.json());
 app.use(cors());
+app.use("/api", api);
 
 const port = process.env.PORT || 5000;
 
 app.get("/express_backend", (req, res) => {
 	res.send({ express: "YOUR EXPRESS BACKEND IS CONNECTED TO REACT" });
 });
-
 app.get("/healthcheck", (req, res) => { 
 	res.sendStatus(200) 
 });
@@ -38,5 +38,3 @@ if (process.env.NODE_ENV === "production") {
 
 // console.log that your server is up and running
 http.listen(port, () => console.log(`Listening on port ${port}`));
-
-// module.exports = app;
