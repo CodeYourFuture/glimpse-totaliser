@@ -2,36 +2,26 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const api = require("./api");
-
-const app = express();
 const path = require("path");
+const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 
+module.exports =  io;
+
+const api = require("./api");
+
 app.use(bodyParser.json());
 app.use(cors());
-
 app.use("/api", api);
-const port = process.env.PORT || 5000;
 
+const port = process.env.PORT || 5000;
 
 app.get("/express_backend", (req, res) => {
 	res.send({ express: "YOUR EXPRESS BACKEND IS CONNECTED TO REACT" });
 });
-
 app.get("/healthcheck", (req, res) => { 
 	res.sendStatus(200) 
-});
-
-io.on("connection", socket => {
-	console.log("User connected");
-	setInterval(() => {
-		socket.emit("FromAPI", "50");
-	  }, 1000);
-	  socket.on("disconnect", () => {
-		console.log("User disconnected");
-	});
 });
 
 /**
