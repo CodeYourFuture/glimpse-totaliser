@@ -37,7 +37,6 @@ io.on("connection", socket => {
 	console.log("User connected");
 	callShopify().then( data => {
 		io.emit("Total", data.totalPrice );
-	   res.sendStatus(200);
 	   })
 	socket.on("disconnect", () => {
 		console.log("User disconnected");
