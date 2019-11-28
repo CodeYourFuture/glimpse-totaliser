@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { useSpring, animated } from "react-spring";
 import logo from "./assets/logo.svg";
 import semi from "./assets/semi.svg";
 import snake from "./assets/snake.svg";
@@ -16,23 +15,10 @@ const Bg = styled.div`
   background-color: #44006e;
 `;
 
-const Total = styled(animated.div)`
-  position: absolute;
-  width: 100%;
-  top: 50%;
-  margin-top: -2.5rem;
-  line-height: 5rem;
-  text-align: center;
-  font-size: 5rem;
-  font-family: "monospace";
-  color: white;
-`;
-
 const Logo = styled.img.attrs({ src: logo })`
   position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  margin-left: -2rem;
+  top: 2rem;
+  right: 2rem;
   width: 4rem;
 `;
 
@@ -72,13 +58,8 @@ const Zag = styled.img.attrs({ src: zag })`
 `;
 
 const Totaliser = props => {
-  const { total } = useSpring({
-    total: props.total
-  });
-  console.log(total);
   return (
     <Bg>
-      <Total>{total.interpolate(x => `£${x.toFixed(2)}`)}</Total>
       <Logo />
       <Semi />
       <Snake />
