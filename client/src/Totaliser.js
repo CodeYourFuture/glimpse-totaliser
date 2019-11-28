@@ -19,7 +19,7 @@ const Bg = styled.div`
 const Total = styled(animated.div)`
   position: absolute;
   width: 100%;
-  top: 50%;
+  top: ${props => props.top};
   margin-top: -2.5rem;
   line-height: 5rem;
   text-align: center;
@@ -72,13 +72,14 @@ const Zag = styled.img.attrs({ src: zag })`
 `;
 
 const Totaliser = props => {
-  const { total } = useSpring({
-    total: props.total
+  const { today, yesterday } = useSpring({
+    today: props.totals.today,
+    yesterday: props.totals.yesterday
   });
-  console.log(total);
   return (
     <Bg>
-      <Total>{total.interpolate(x => `£${x.toFixed(2)}`)}</Total>
+      <Total top="50%">{today.interpolate(x => `£${x.toFixed(0)}`)}</Total>
+      <Total top="20%">{yesterday.interpolate(x => `£${x.toFixed(0)}`)}</Total>
       <Logo />
       <Semi />
       <Snake />

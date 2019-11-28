@@ -8,19 +8,22 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      total: 0
+      today: 0,
+      yesterday: 0
     };
   }
 
   componentDidMount() {
-    socket.on("Total", total => {
-      this.setState({ total });
+    socket.on("todaysTotal", total => {
+      this.setState({ today: total });
+    });
+    socket.on("yesterdaysTotal", total => {
+      this.setState({ yesterday: total });
     });
   }
 
   render() {
-    const { total } = this.state;
-    return <Totaliser total={total} />;
+    return <Totaliser totals={this.state} />;
   }
 }
 
