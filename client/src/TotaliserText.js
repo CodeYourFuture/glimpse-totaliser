@@ -42,21 +42,23 @@ const Bottom = styled.div`
 `;
 
 const Label = styled.div`
-  font-size: 1.8rem;
-  color: #888;
+  font-size: 1.6rem;
+  color: #aaa;
+  letter-spacing: 0.2rem;
 `;
 
 const BigLabel = styled.div`
-  font-size: 2.2rem;
-  color: #888;
+  font-size: 2.1rem;
+  color: #aaa;
+  letter-spacing: 0.2rem;
 `;
 
 const HugeText = styled.div`
-  font-size: 10rem;
+  font-size: 12rem;
 `;
 
 const BigText = styled.div`
-  font-size: 4rem;
+  font-size: 6rem;
 `;
 
 const TotaliserText = props => {
