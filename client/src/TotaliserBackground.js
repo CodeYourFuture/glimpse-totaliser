@@ -17,9 +17,8 @@ const Bg = styled.div`
 
 const Logo = styled.img.attrs({ src: logo })`
   position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  margin-left: -2rem;
+  top: 2rem;
+  right: 2rem;
   width: 4rem;
 `;
 

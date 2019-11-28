@@ -3,33 +3,60 @@ import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   position: absolute;
   top: 0;
   bottom: 0;
   width: 100%;
   text-align: center;
+  text-transform: uppercase;
   color: white;
 `;
 
+const FlexWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+`;
+
 const Top = styled.div`
-  flex: 1;
-  font-size: 2rem;
+  display: flex;
+  flex: 2;
+  justify-content: center;
   align-items: end;
 `;
 
 const Middle = styled.div`
+  display: flex;
   flex: 1;
-  font-size: 5rem;
-  font-family: "monospace";
-  color: white;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Bottom = styled.div`
-  flex: 1;
-  font-size: 2rem;
+  display: flex;
+  flex: 2;
+  justify-content: center;
+  align-items: top;
+  padding-top: 3rem;
+`;
+
+const Label = styled.div`
+  font-size: 1.8rem;
+  color: #888;
+`;
+
+const BigLabel = styled.div`
+  font-size: 2.2rem;
+  color: #888;
+`;
+
+const HugeText = styled.div`
+  font-size: 10rem;
+`;
+
+const BigText = styled.div`
+  font-size: 4rem;
 `;
 
 const TotaliserText = props => {
@@ -39,24 +66,28 @@ const TotaliserText = props => {
   });
   return (
     <Wrapper>
-      <div>
+      <FlexWrapper>
         <Top>
-          <div>Today you've raised:</div>
+          <BigLabel>Today you've raised:</BigLabel>
         </Top>
         <Middle>
-          <animated.div>
-            {today.interpolate(x => `£${x.toFixed(0)}`)}
-          </animated.div>
+          <HugeText>
+            <animated.div>
+              {today.interpolate(x => `£${x.toFixed(0)}`)}
+            </animated.div>
+          </HugeText>
         </Middle>
         <Bottom>
-          <>
-            <div>Yesterday's total:</div>
-            <animated.div>
-              {yesterday.interpolate(x => `£${x.toFixed(0)}`)}
-            </animated.div>
-          </>
+          <div>
+            <Label>Yesterday's total:</Label>
+            <BigText>
+              <animated.div>
+                {yesterday.interpolate(x => `£${x.toFixed(0)}`)}
+              </animated.div>
+            </BigText>
+          </div>
         </Bottom>
-      </div>
+      </FlexWrapper>
     </Wrapper>
   );
 };
