@@ -43,13 +43,11 @@ const Bottom = styled.div`
 
 const Label = styled.div`
   font-size: 1.6rem;
-  color: #aaa;
   letter-spacing: 0.2rem;
 `;
 
 const BigLabel = styled.div`
   font-size: 2.1rem;
-  color: #aaa;
   letter-spacing: 0.2rem;
 `;
 
