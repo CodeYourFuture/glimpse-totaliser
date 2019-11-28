@@ -49,6 +49,10 @@ const Label = styled.div`
 const BigLabel = styled.div`
   font-size: 2.1rem;
   letter-spacing: 0.2rem;
+  color: #44006e;
+  text-shadow: -1px -1px 0 #fff, -1px 0px 0 #fff, -1px 1px 0 #fff,
+    0px -1px 0 #fff, 0px 0px 0 #fff, 0px 1px 0 #fff, 1px -1px 0 #fff,
+    1px 0px 0 #fff, 1px 1px 0 #fff;
 `;
 
 const HugeText = styled.div`
