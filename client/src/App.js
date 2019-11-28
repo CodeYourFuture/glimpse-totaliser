@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
-import Totaliser from "./Totaliser";
+import TotaliserBackground from "./TotaliserBackground";
+import TotaliserText from "./TotaliserText";
 
 const socket = socketIOClient("/");
 
@@ -23,7 +24,12 @@ class App extends Component {
   }
 
   render() {
-    return <Totaliser totals={this.state} />;
+    return (
+      <>
+        <TotaliserBackground totals={this.state} />
+        <TotaliserText totals={this.state} />
+      </>
+    );
   }
 }
 
