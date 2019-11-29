@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import socketIOClient from "socket.io-client";
+import io from "socket.io-client";
 import TotaliserBackground from "./TotaliserBackground";
 import TotaliserText from "./TotaliserText";
 
@@ -15,7 +15,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    socket = socketIOClient("/");
+    socket = io("/", { query: { store: this.props.store } });
     socket.on("disconnect", reason => {
       if (reason === "io server disconnect") {
         socket.connect();

@@ -72,7 +72,7 @@ const TotaliserText = props => {
     <Wrapper>
       <FlexWrapper>
         <Top>
-          <BigLabel>Today you've raised:</BigLabel>
+          <BigLabel>Today we've raised:</BigLabel>
         </Top>
         <Middle>
           <HugeText>
