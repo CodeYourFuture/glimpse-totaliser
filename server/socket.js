@@ -1,32 +1,19 @@
 const shopify = require("./shopify");
 const AsyncPolling = require("async-polling");
-
-const getToday = () => {
-  const date = new Date();
-  date.setHours(0, 0, 0, 0);
-  return date.toISOString();
-};
-
-const getYesterday = () => {
-  const date = new Date();
-  date.setHours(0, 0, 0, 0);
-  date.setDate(date.getDate() - 1);
-  return date.toISOString();
-};
-
-getDateFromString = str =>
-  ({
-    today: getToday(),
-    yesterday: getYesterday()
-  }[str]);
+const { getDateFromString, paginate } = require("./utils");
 
 const getOrdersTotal = (store, from, to) =>
-  store.order
-    .list({
+  paginate(
+    {
+      limit: 250,
+      status: "any",
       financial_status: "paid",
+      fulfillment_status: "shipped",
       created_at_min: getDateFromString(from),
       created_at_max: getDateFromString(to)
-    })
+    },
+    params => store.order.list(params)
+  )
     .then(orders =>
       orders.reduce((acc, order, index) => acc + Number(order.total_price), 0)
     )
@@ -63,7 +50,7 @@ module.exports = io => {
         getOrdersTotal(store, "today")
           .then(result => end(null, result))
           .catch(end);
-      }, 2000);
+      }, 1500);
       pollers[storeName].run();
     }
 
