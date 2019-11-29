@@ -19,11 +19,12 @@ const getDateFromString = str =>
 
 const paginate = async (params, request) => {
   let responses = [];
+  let nextParams = params;
   do {
-    const response = await request(params);
+    const response = await request(nextParams);
     responses = [...responses, ...response];
-    params = response.nextPageParameters;
-  } while (params !== undefined);
+    nextParams = response.nextPageParameters;
+  } while (nextParams !== undefined);
   return responses;
 };
 

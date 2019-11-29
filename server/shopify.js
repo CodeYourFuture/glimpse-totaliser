@@ -22,7 +22,8 @@ const addStore = (store, name, key, pass) => {
     shopify[store] = new Shopify({
       shopName: name,
       apiKey: key,
-      password: pass
+      password: pass,
+      apiVersion: "2019-10"
     });
   } else {
     console.log(
