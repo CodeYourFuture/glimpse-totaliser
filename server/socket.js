@@ -8,6 +8,7 @@ const getOrdersTotal = (store, from, to) =>
       limit: 250,
       status: "any",
       financial_status: "paid",
+      fulfillment_status: "shipped",
       created_at_min: getDateFromString(from),
       created_at_max: getDateFromString(to)
     },
@@ -49,7 +50,7 @@ module.exports = io => {
         getOrdersTotal(store, "today")
           .then(result => end(null, result))
           .catch(end);
-      }, 2000);
+      }, 1500);
       pollers[storeName].run();
     }
 
