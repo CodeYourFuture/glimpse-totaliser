@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useSpring, animated } from "react-spring";
+import { useSpring, animated, config } from "react-spring";
 
 const Wrapper = styled.div`
   position: absolute;
@@ -64,10 +64,13 @@ const BigText = styled.div`
 `;
 
 const TotaliserText = props => {
-  const { today, yesterday } = useSpring({
-    today: props.totals.today,
-    yesterday: props.totals.yesterday
-  });
+  const { today, yesterday } = useSpring(
+    {
+      today: props.totals.today,
+      yesterday: props.totals.yesterday
+    },
+    { config: config.slow }
+  );
   return (
     <Wrapper>
       <FlexWrapper>

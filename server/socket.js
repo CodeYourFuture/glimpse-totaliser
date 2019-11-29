@@ -7,7 +7,6 @@ const getOrdersTotal = (store, from, to) =>
     {
       limit: 250,
       status: "any",
-      fulfillment_status: "fulfilled",
       financial_status: "paid",
       created_at_min: getDateFromString(from),
       created_at_max: getDateFromString(to)
