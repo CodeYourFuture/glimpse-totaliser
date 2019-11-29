@@ -21,9 +21,9 @@ const FlexWrapper = styled.div`
 
 const Top = styled.div`
   display: flex;
-  flex: 2;
+  flex: 1;
   justify-content: center;
-  align-items: end;
+  align-items: flex-end;
 `;
 
 const Middle = styled.div`
@@ -35,20 +35,20 @@ const Middle = styled.div`
 
 const Bottom = styled.div`
   display: flex;
-  flex: 2;
+  flex: 1;
   justify-content: center;
-  align-items: top;
-  padding-top: 3rem;
+  align-items: flex-start;
+  padding-top: 3vh;
 `;
 
 const Label = styled.div`
-  font-size: 1.6rem;
-  letter-spacing: 0.2rem;
+  font-size: 5vh;
+  letter-spacing: 1vh;
 `;
 
 const BigLabel = styled.div`
-  font-size: 2.1rem;
-  letter-spacing: 0.2rem;
+  font-size: 7vh;
+  letter-spacing: 1vh;
   color: #44006e;
   text-shadow: -1px -1px 0 #fff, -1px 0px 0 #fff, -1px 1px 0 #fff,
     0px -1px 0 #fff, 0px 0px 0 #fff, 0px 1px 0 #fff, 1px -1px 0 #fff,
@@ -56,12 +56,16 @@ const BigLabel = styled.div`
 `;
 
 const HugeText = styled.div`
-  font-size: 12rem;
+  font-size: 32vh;
+  letter-spacing: 1.5vh;
 `;
 
 const BigText = styled.div`
-  font-size: 6rem;
+  font-size: 14vh;
+  letter-spacing: 1vh;
 `;
+
+const formatNumber = n => Number(n.toFixed(0)).toLocaleString();
 
 const TotaliserText = props => {
   const { today, yesterday } = useSpring(
@@ -80,7 +84,7 @@ const TotaliserText = props => {
         <Middle>
           <HugeText>
             <animated.div>
-              {today.interpolate(x => props.currencySymbol + x.toFixed(0))}
+              {today.interpolate(n => props.currencySymbol + formatNumber(n))}
             </animated.div>
           </HugeText>
         </Middle>
@@ -90,7 +94,7 @@ const TotaliserText = props => {
             <BigText>
               <animated.div>
                 {yesterday.interpolate(
-                  x => props.currencySymbol + x.toFixed(0)
+                  n => props.currencySymbol + formatNumber(n)
                 )}
               </animated.div>
             </BigText>
