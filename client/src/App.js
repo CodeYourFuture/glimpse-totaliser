@@ -16,7 +16,11 @@ class App extends Component {
 
   componentDidMount() {
     socket = io("/", { query: { store: this.props.store } });
+    socket.on("connect", () => {
+      console.log("Connected");
+    });
     socket.on("disconnect", reason => {
+      console.log("Disconnected");
       if (reason === "io server disconnect") {
         socket.connect();
       }

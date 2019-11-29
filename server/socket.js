@@ -24,16 +24,16 @@ module.exports = io => {
   const clientCounts = {};
 
   io.on("connection", socket => {
-    console.log("Client connected");
-
     const storeName = socket.handshake.query.store;
     const store = shopify[storeName];
 
     if (!clientCounts[storeName]) {
-      clientCounts[storeName] = 0;
+      clientCounts[storeName] = 1;
     } else {
       clientCounts[storeName]++;
     }
+
+    console.log("Client connected", clientCounts);
 
     if (!store) {
       // Could emit an error status to the client here
@@ -59,7 +59,7 @@ module.exports = io => {
     });
 
     socket.on("disconnect", () => {
-      console.log("Client disconnected");
+      console.log("Client disconnected", clientCounts);
       clientCounts[storeName]--;
       if (clientCounts[storeName] < 1 && pollers[storeName]) {
         pollers[storeName].stop();
