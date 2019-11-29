@@ -28,23 +28,31 @@ const getOrdersTotal = (store, from, to) =>
       created_at_max: getDateFromString(to)
     })
     .then(orders =>
-      orders.reduce((acc, value, index) => acc + Number(value.total_price), 0)
+      orders.reduce((acc, order, index) => acc + Number(order.total_price), 0)
     )
     .catch(console.error);
 
 module.exports = io => {
   const pollers = {};
-  let clientCount = 0;
+  const clientCounts = {};
 
   io.on("connection", socket => {
     console.log("Client connected");
-    clientCount++;
 
     const storeName = socket.handshake.query.store;
     const store = shopify[storeName];
 
-    if (!store) return;
-    // Could emit an error to the client here
+    if (!clientCounts[storeName]) {
+      clientCounts[storeName] = 0;
+    } else {
+      clientCounts[storeName]++;
+    }
+
+    if (!store) {
+      // Could emit an error status to the client here
+      console.log("No store could be found for " + store);
+      return;
+    }
 
     getOrdersTotal(store, "yesterday", "today").then(total => {
       socket.emit("yesterdaysTotal", total);
@@ -65,8 +73,8 @@ module.exports = io => {
 
     socket.on("disconnect", () => {
       console.log("Client disconnected");
-      clientCount--;
-      if (clientCount === 0) {
+      clientCounts[storeName]--;
+      if (clientCounts[storeName] < 1 && pollers[storeName]) {
         pollers[storeName].stop();
         pollers[storeName] = null;
       }
