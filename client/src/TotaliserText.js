@@ -77,7 +77,7 @@ const TotaliserText = props => {
         <Middle>
           <HugeText>
             <animated.div>
-              {today.interpolate(x => `£${x.toFixed(0)}`)}
+              {today.interpolate(x => props.currencySymbol + x.toFixed(0))}
             </animated.div>
           </HugeText>
         </Middle>
@@ -86,7 +86,9 @@ const TotaliserText = props => {
             <Label>Yesterday's total:</Label>
             <BigText>
               <animated.div>
-                {yesterday.interpolate(x => `£${x.toFixed(0)}`)}
+                {yesterday.interpolate(
+                  x => props.currencySymbol + x.toFixed(0)
+                )}
               </animated.div>
             </BigText>
           </div>

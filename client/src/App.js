@@ -3,7 +3,7 @@ import socketIOClient from "socket.io-client";
 import TotaliserBackground from "./TotaliserBackground";
 import TotaliserText from "./TotaliserText";
 
-const socket = socketIOClient("/");
+let socket;
 
 class App extends Component {
   constructor() {
@@ -15,6 +15,12 @@ class App extends Component {
   }
 
   componentDidMount() {
+    socket = socketIOClient("/");
+    socket.on("disconnect", reason => {
+      if (reason === "io server disconnect") {
+        socket.connect();
+      }
+    });
     socket.on("todaysTotal", total => {
       this.setState({ today: total });
     });
@@ -23,11 +29,18 @@ class App extends Component {
     });
   }
 
+  componentWillUnmount() {
+    if (socket) socket.close();
+  }
+
   render() {
     return (
       <>
         <TotaliserBackground totals={this.state} />
-        <TotaliserText totals={this.state} />
+        <TotaliserText
+          totals={this.state}
+          currencySymbol={this.props.store.includes("us") ? "$" : "£"}
+        />
       </>
     );
   }
