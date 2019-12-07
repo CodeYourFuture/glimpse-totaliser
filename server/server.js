@@ -19,7 +19,7 @@ app.get("/healthcheck", (req, res) => {
 });
 
 app.get("/api/payment", (req, res) => {
-  console.log(req.body);
+  console.log(req);
   res.send(200);
 });
 
