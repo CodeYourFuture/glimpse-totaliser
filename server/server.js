@@ -18,7 +18,7 @@ app.get("/healthcheck", (req, res) => {
   res.sendStatus(200);
 });
 
-app.get("/api/payment", (req, res) => {
+app.post("/api/payment", (req, res) => {
   console.log(req);
   res.send(200);
 });
