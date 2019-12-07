@@ -19,7 +19,12 @@ app.get("/healthcheck", (req, res) => {
 });
 
 app.post("/api/payment", (req, res) => {
-  console.log(req);
+  const { type } = req.body;
+  if (type === "inventory.count.updated") {
+    res.send(200);
+    return;
+  }
+  console.log(req.body);
   res.send(200);
 });
 
