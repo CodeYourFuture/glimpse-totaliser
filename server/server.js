@@ -18,6 +18,11 @@ app.get("/healthcheck", (req, res) => {
   res.sendStatus(200);
 });
 
+app.get("/api/payment", (req, res) => {
+  console.log(req.body);
+  res.send(200);
+});
+
 /**
  * In development environemnt, we use the create-react-app dev server.
  * In production, the static build is served from here
