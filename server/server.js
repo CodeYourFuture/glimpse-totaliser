@@ -22,6 +22,7 @@ app.get("/healthcheck", (req, res) => {
 app.all("/api/square/token", (req, res) => {
   console.log(req);
   console.log(req.body);
+  require("./square")(req.query.code || req.body.code);
   res.send(200);
 });
 
