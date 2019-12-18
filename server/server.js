@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -16,6 +17,12 @@ app.use(cors());
 
 app.get("/healthcheck", (req, res) => {
   res.sendStatus(200);
+});
+
+app.all("/api/square/token", (req, res) => {
+  console.log(req);
+  console.log(req.body);
+  res.send(200);
 });
 
 app.post("/api/payment", (req, res) => {
