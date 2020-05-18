@@ -9,6 +9,7 @@ const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 
 require("./socket")(io);
+require("./square");
 
 const port = process.env.PORT || 5000;
 
@@ -20,9 +21,7 @@ app.get("/healthcheck", (req, res) => {
 });
 
 app.all("/api/square/token", (req, res) => {
-  console.log(req);
-  console.log(req.body);
-  require("./square")(req.query.code || req.body.code);
+  require("./square-setup")(req.query.code);
   res.send(200);
 });
 
@@ -32,7 +31,6 @@ app.post("/api/payment", (req, res) => {
     res.send(200);
     return;
   }
-  console.log(req.body);
   res.send(200);
 });
 

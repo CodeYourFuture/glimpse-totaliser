@@ -1,58 +1,49 @@
 var SquareConnect = require("square-connect");
+const { getDateFromString } = require("./utils");
 
-var apiInstance = new SquareConnect.OAuthApi();
+var defaultClient = SquareConnect.ApiClient.instance;
+var oauth2 = defaultClient.authentications["oauth2"];
+oauth2.accessToken = process.env.SQUARE_UK_ACCESS_TOKEN;
 
-module.exports = code => {
-  var body = {
-    client_id: process.env.SQUARE_UK_CLIENT_ID,
-    client_secret: process.env.SQUARE_UK_CLIENT_SECRET,
-    grant_type: "authorization_code",
-    code
-  };
+var locationsApi = new SquareConnect.LocationsApi();
 
-  apiInstance.obtainToken(body).then(
-    function(data) {
-      console.log("API called successfully. Returned data: ");
-      console.log(data);
-      console.log(body);
+// locationsApi.listLocations().then(console.log);
 
-      var defaultClient = SquareConnect.ApiClient.instance;
-      var oauth2 = defaultClient.authentications["oauth2"];
-      oauth2.accessToken = data.access_token;
+const london = "GD082R891TXHY";
 
-      var api = new SquareConnect.LocationsApi();
+var apiInstance = new SquareConnect.PaymentsApi();
 
-      api.listLocations().then(
-        function(locations) {
-          console.log("locations");
-          console.log(locations);
-        },
-        function(error) {
-          console.error(error);
-        }
-      );
+// var opts = {
+//   'beginTime': "beginTime_example", // String | Timestamp for the beginning of the reporting period, in RFC 3339 format. Inclusive. Default: The current time minus one year.
+//   'endTime': "endTime_example", // String | Timestamp for the end of the requested reporting period, in RFC 3339 format.  Default: The current time.
+//   'sortOrder': "sortOrder_example", // String | The order in which results are listed. - `ASC` - oldest to newest - `DESC` - newest to oldest (default).
+//   'cursor': "cursor_example", // String | A pagination cursor returned by a previous call to this endpoint. Provide this to retrieve the next set of results for the original query.  See [Pagination](https://developer.squareup.com/docs/basics/api101/pagination) for more information.
+//   'locationId': "locationId_example", // String | ID of ocation associated with payment
+//   'total': 789, // Number | The exact amount in the total_money for a `Payment`.
+//   'last4': "last4_example", // String | The last 4 digits of `Payment` card.
+//   'cardBrand': "cardBrand_example" // String | The brand of `Payment` card. For example, `VISA`
+// };
 
-      // var transactionsApi = new SquareConnect.V1TransactionsApi();
-
-      // var locationId = "locationId_example"; // String | The ID of the location to list online store orders for.
-
-      // // var opts = {
-      // //   order: "order_example", // String | TThe order in which payments are listed in the response.
-      // //   limit: 56, // Number | The maximum number of payments to return in a single response. This value cannot exceed 200.
-      // //   batchToken: "batchToken_example" // String | A pagination cursor to retrieve the next set of results for your original query to the endpoint.
-      // // };
-      // transactionsApi.listOrders(locationId).then(
-      //   function(data) {
-      //     console.log("API called successfully. Returned data: " + data);
-      //   },
-      //   function(error) {
-      //     console.error(error);
-      //   }
-      // );
-    },
-    function(error) {
-      console.error(error);
-      console.log(body);
-    }
-  );
+const paginate = async (params, request, transform) => {
+  let responses = [];
+  let nextCursor = undefined;
+  do {
+    console.log("paginating");
+    const response = await request({ ...params, cursor: nextCursor });
+    responses = [...responses, ...transform(response)];
+    nextCursor = response.cursor;
+  } while (nextCursor);
+  return responses;
 };
+
+paginate(
+  {
+    locationId: london,
+    beginTime: getDateFromString("today")
+  },
+  params => apiInstance.listPayments(params),
+  res => res.payments
+)
+  //   .then(res => res.payments)
+  .then(payments => payments.map(payment => payment.created_at))
+  .then(console.log);
